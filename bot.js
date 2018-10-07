@@ -53,4 +53,57 @@ bot.registry
         commandState: true
     })
     .registerCommandsIn(path.join(__dirname, 'commands'));
+
+
+     
+
+
+
+client.on('voiceStateUpdate', (oldM, newM) => {
+  let rebel1 = oldM.serverMute;
+  let rebel2 = newM.serverMute;
+  let codes1 = oldM.serverDeaf;
+  let codes2 = newM.serverDeaf;
+  let ch = oldM.guild.channels.find('name', 'log')
+  if(!ch) return;//ReBeL & Codes
+    oldM.guild.fetchAuditLogs()
+    .then(logs => {
+      let user = logs.entries.first().executor.username
+    if(rebel1 === false && rebel2 === true) {
+       let embed = new Discord.RichEmbed()
+       .setAuthor(`${newM.user.tag}`, newM.user.avatarURL)
+       .setDescription(`${newM} تم إعطآئه ميوت صوتي`)
+       .setFooter(`بوآسطهه : ${user}`)
+        .setColor('#36393e')
+       ch.send(embed)
+    }
+    if(rebel1 === true && rebel2 === false) {
+       let embed = new Discord.RichEmbed()
+       .setAuthor(`${newM.user.tag}`, newM.user.avatarURL)
+       .setDescription(`${newM} تم فك الميوت الصوتي `)
+       .setFooter(`بواسطه : ${user}`)
+        .setColor('#36393e')
+       .setTimestamp()
+       ch.send(embed)
+    }//ReBeL & Codes
+    if(codes1 === false && codes2 === true) {
+       let embed = new Discord.RichEmbed()
+       .setAuthor(`${newM.user.tag}`, newM.user.avatarURL)
+       .setDescription(`${newM} تم إعطآئه ديفن أو سمآعهه`)
+       .setFooter(`بوآسطه : ${user}`)
+        .setColor('#36393e')
+       .setTimestamp()
+       ch.send(embed)
+    }//ReBeL & Codes
+    if(codes1 === true && codes2 === false) {
+       let embed = new Discord.RichEmbed()
+       .setAuthor(`${newM.user.tag}`, newM.user.avatarURL)
+       .setDescription(`${newM} تم فك عنهه الديفن أو السمآعهه`)
+       .setFooter(`بوآسطه : ${user}`)
+        .setColor('#36393e')
+       .setTimestamp()
+       ch.send(embed)
+    }
+  })
+});
 bot.login(config.token);
