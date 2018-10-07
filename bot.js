@@ -59,7 +59,7 @@ bot.registry
 
 
 
-client.on('voiceStateUpdate', (oldM, newM) => {
+bot.on('voiceStateUpdate', (oldM, newM) => {
   let rebel1 = oldM.serverMute;
   let rebel2 = newM.serverMute;
   let codes1 = oldM.serverDeaf;
