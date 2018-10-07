@@ -1,6 +1,6 @@
 module.exports = {
     token: process.env.BOT_TOKEN,
-    SC: "288450828837322764",
+    SC: "450711003324350485",
     SC2: "391529339214364674",
     logchannel: "498476900256055306",
     testchannel: "498477001062088704",
