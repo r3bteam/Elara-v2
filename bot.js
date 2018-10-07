@@ -6,7 +6,7 @@ const Discord = require('discord.js');
 const bot = new CommandoClient({
     commandPrefix: "e!",
     unknownCommandResponse: false,
-    owner: ['288450828837322764', "391529339214364674", "440810964061913119"],
+    owner: ['450711003324350485', "391529339214364674", "440810964061913119"],
     invite: "https://discord.gg/hgsM86w",
     autoReconnect: true,
     commandEditableDuration: 1000000,
