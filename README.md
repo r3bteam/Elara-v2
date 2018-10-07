@@ -14,3 +14,8 @@ My Support Server
 Status
 =================
 [![Discord Bots](https://discordbots.org/api/widget/455166272339181589.svg)](https://discordbots.org/bot/455166272339181589)
+
+
+Public Version of Elara
+=================
+[Click Here](https://github.com/Elara-Discord-Bots/PublicBot-V2)
