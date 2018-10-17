@@ -59,50 +59,46 @@ bot.registry
 
 
 
-bot.on('voiceStateUpdate', (oldM, newM) => {
-  let rebel1 = oldM.serverMute;
-  let rebel2 = newM.serverMute;
-  let codes1 = oldM.serverDeaf;
-  let codes2 = newM.serverDeaf;
-  let ch = oldM.guild.channels.find('name', 'log')
-  if(!ch) return;//ReBeL & Codes
-    oldM.guild.fetchAuditLogs()
+ client.on('voiceStateUpdate', (oldM, newM) => {
+  let m1 = oldM.serverMute;
+  let m2 = newM.serverMute;
+   let d1 = oldM.serverDeaf;
+  let d2 = newM.serverDeaf;
+   let ch = oldM.guild.channels.find('name', 'log')
+  if(!ch) return;
+     oldM.guild.fetchAuditLogs()
     .then(logs => {
-      let user = logs.entries.first().executor.username
-    if(rebel1 === false && rebel2 === true) {
+       let user = logs.entries.first().executor
+     if(m1 === false && m2 === true) {
        let embed = new Discord.RichEmbed()
        .setAuthor(`${newM.user.tag}`, newM.user.avatarURL)
-       .setDescription(`${newM} تم إعطآئه ميوت صوتي`)
-       .setFooter(`بوآسطهه : ${user}`)
-        .setColor('#36393e')
-       ch.send(embed)
+       .setDescription(`${newM} has muted in server`)
+       .setFooter(`By : ${user}`)
+        ch.send(embed)
     }
-    if(rebel1 === true && rebel2 === false) {
+    if(m1 === true && m2 === false) {
        let embed = new Discord.RichEmbed()
        .setAuthor(`${newM.user.tag}`, newM.user.avatarURL)
-       .setDescription(`${newM} تم فك الميوت الصوتي `)
-       .setFooter(`بواسطه : ${user}`)
-        .setColor('#36393e')
+       .setDescription(`${newM} has unmuted in server`)
+       .setFooter(`By : ${user}`)
        .setTimestamp()
-       ch.send(embed)
-    }//ReBeL & Codes
-    if(codes1 === false && codes2 === true) {
+        ch.send(embed)
+    }
+    if(d1 === false && d2 === true) {
        let embed = new Discord.RichEmbed()
        .setAuthor(`${newM.user.tag}`, newM.user.avatarURL)
-       .setDescription(`${newM} تم إعطآئه ديفن أو سمآعهه`)
-       .setFooter(`بوآسطه : ${user}`)
-        .setColor('#36393e')
+       .setDescription(`${newM} has deafened in server`)
+       .setFooter(`By : ${user}`)
        .setTimestamp()
-       ch.send(embed)
-    }//ReBeL & Codes
-    if(codes1 === true && codes2 === false) {
+        ch.send(embed)
+    }
+    if(d1 === true && d2 === false) {
        let embed = new Discord.RichEmbed()
        .setAuthor(`${newM.user.tag}`, newM.user.avatarURL)
-       .setDescription(`${newM} تم فك عنهه الديفن أو السمآعهه`)
-       .setFooter(`بوآسطه : ${user}`)
-        .setColor('#36393e')
+       .setDescription(`${newM} has undeafened in server`)
+       .setFooter(`By : ${user}`)
        .setTimestamp()
-       ch.send(embed)
+        ch.send(embed)
     }
   })
 });
@@ -350,17 +346,50 @@ bot.on('messageDelete', message => {
 });
 
 
-   bot.on("deleteChannel",  dc => {
+ bot.on("channelDelete",  dc => {
   const channel = dc.guild.channels.find("name", "log")
   if(channel) {
   var embed = new Discord.RichEmbed()
   .setTitle(dc.guild.name)
   .setDescription(`***Channel Deleted Name : *** **${dc.name}** ⬅️`)
   .setColor(`RANDOM`)
-  .setTimestamp(); 
+  .setTimestamp();
   channel.sendEmbed(embed)
   }
   });
-
-
+ bot.on('guildMemberAdd', member => {
+    if (!member || !member.id || !member.guild) return;
+    const guild = member.guild;
+	
+    const channel = member.guild.channels.find('name', 'log');
+    if (!channel) return;
+    let memberavatar = member.user.avatarURL
+    const fromNow = moment(member.user.createdTimestamp).fromNow();
+    const isNew = (new Date() - member.user.createdTimestamp) < 900000 ? '🆕' : '';
+    
+    let embed = new Discord.RichEmbed()
+       .setAuthor(`${member.user.tag}`, member.user.avatarURL)
+	   .setThumbnail(memberavatar)
+       .setColor('RANDOM')
+       .setDescription(`📥 <@${member.user.id}> **Joined To The Server**\n\n`)
+       .setTimestamp();
+     channel.send({embed:embed});
+});
+ bot.on('guildMemberRemove', member => {
+    if (!member || !member.id || !member.guild) return;
+    const guild = member.guild;
+	
+    const channel = member.guild.channels.find('name', 'log');
+    if (!channel) return;
+    let memberavatar = member.user.avatarURL
+    const fromNow = moment(member.joinedTimestamp).fromNow();
+    
+    let embed = new Discord.RichEmbed()
+       .setAuthor(`${member.user.tag}`, member.user.avatarURL)
+	   .setThumbnail(memberavatar)
+       .setColor('RAMDOM')
+       .setDescription(`📤 <@${member.user.id}> **Leave From Server**\n\n`)
+       .setTimestamp();
+     channel.send({embed:embed});
+});
 bot.login(config.token);
